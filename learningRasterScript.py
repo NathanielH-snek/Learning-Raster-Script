@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Aug 17 11:49:28 2022
-
-@author: 11nho
-"""
 
 # -*- coding: utf-8 -*-
 """
@@ -20,6 +14,7 @@ from tkinter import *
 from tkinter import filedialog
 import pandas as pds
 from tqdm import tqdm as tq
+from pathlib import Path
 #%%Create Button Function for data input
 def get_file_path():
     global file_path
@@ -85,6 +80,7 @@ graphpair = zip(graphStart,graphEnd)
 graphx = list(graphpair)
 #%%create graphs
 print("Creating Graphs")
+myPath = str(Path.home() / "Downloads")
 for index, num in tq(enumerate(graphx)):
     x,y = num
     leftbound = x
@@ -106,11 +102,11 @@ for index, num in tq(enumerate(graphx)):
     plt.eventplot(a, orientation='horizontal', colors='b')
     plt.xlabel("Time in Recording (s)")
     plt.ylabel("Arbitrary Axis (Abu)")
-    plt.savefig("Eventplot" + str(num) + ".pdf")
+    plt.savefig(myPath + "\Eventplot" + str(num) + ".pdf")
 else:
     pass
 
-plt.show()
+
 print("Graphs Complete")
 
 
