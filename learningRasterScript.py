@@ -19,17 +19,25 @@ import tkinter as tk
 from tkinter import *
 from tkinter import filedialog
 import pandas as pds
-
+from tqdm import tqdm as tq
 #%%Create Button Function for data input
 def get_file_path():
     global file_path
     # Open and return file path
     file_path= filedialog.askopenfilename(title = "Select A File", filetypes = (("Excel Files", "*.xlsx"),))
     l1 = Label(window, text = "File path: " + file_path).pack()
-
+    
 window = Tk()
+width = window.winfo_screenwidth()
+height = window.winfo_screenheight()
+
+def close():
+    window.destroy()
+
 # Creating a button to search the file
 b1 = Button(window, text = "Open File", command = get_file_path).pack()
+b2 = Button(window, text = "OK", command = close).pack()
+window.geometry("%dx%d" % (width, height))
 window.mainloop()
 print(file_path)
 #%%Read Excel File
@@ -39,14 +47,12 @@ usvTimes = ds["Begin Time (s)"].tolist()
 #beginning times for tones in seconds
 toneStart = ds["Tone Time Markers"].tolist()
 toneStart2 = ds["Tone Time Markers"].tolist()
-
 #%%creates empty lists to be used by loops later
 graphStart = []
 graphEnd = []
-
 #%%creates the first parameter of the x value for each graph
 print("Calculating GraphStart")
-for num in toneStart:
+for num in tq(toneStart):
     try:
         int(float(num))
     except:
@@ -54,10 +60,9 @@ for num in toneStart:
     else:
         graphStart.append(num - 30)
 print("Complete")
-
 #%%creates the second parameter of the x value for each graph
 print("calculating GraphEnd")
-for num in toneStart2:
+for num in tq(toneStart2):
     try:
         int(float(num))
     except:
@@ -67,7 +72,7 @@ for num in toneStart2:
 print("Complete")
 #%%Makes usvTimes usable
 print("Calculating USVTimeStamps")
-for num in usvTimes:
+for num in tq(usvTimes):
     try:
         int(float(num))
     except:
@@ -76,16 +81,11 @@ print("Complete")
 #%%pair beggining and end parameter into a full list 
 graphpair = zip(graphStart,graphEnd)
 
-#%%check to make sure zip worked
+#%%Zip x and y coordinates together
 graphx = list(graphpair)
-print(graphx)
-
-
-
-
 #%%create graphs
 print("Creating Graphs")
-for index, num in enumerate(graphx):
+for index, num in tq(enumerate(graphx)):
     x,y = num
     leftbound = x
     rightbound = y
@@ -104,6 +104,9 @@ for index, num in enumerate(graphx):
     plt.rcParams["figure.autolayout"] = True
     plt.hlines(1, leftbound, rightbound)
     plt.eventplot(a, orientation='horizontal', colors='b')
+    plt.xlabel("Time in Recording (s)")
+    plt.ylabel("Arbitrary Axis (Abu)")
+    plt.savefig("Eventplot" + str(num) + ".pdf")
 else:
     pass
 
