@@ -1,0 +1,7 @@
+Rstudio:
+##Delete all Objects/Variables from Global Environment:##
+	rm(list = ls(all.names = TRUE))
+##Allows pasting of unedited paths from windows using "pp", "tab", "enter"##
+snippet pp
+    "`r gsub('"', "", gsub("\\\\", "/", readClipboard()))`"
+Python:

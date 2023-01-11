@@ -1,0 +1,34 @@
+### Be sure to enter an experiment name, note that empty quotations notate necessary user inputs ###
+
+### Creates an experiment ###
+experiment <- create_experiment(experiment_name = "")
+
+### Loads Data from an excel file ### 
+my_new_data <- add_timepoint_data(data_path = "")
+
+### Scores data, note all of the variable inputs ###
+my_scored_data <- score_timepoint_data(data_subset = my_new_data,
+                                    group = "",
+                                    id = "",
+                                    animal = "",
+                                    experimenter = "")
+str(my_scored_data)
+
+### Adds the scored data to the experiment ###
+experiment <- add_to_experiment(experiment = experiment, added_data = my_scored_data)
+
+### If necessary removes data from experiment most likely will be omitted ###
+experiment <- remove_experiment_data(experiment, data_id = 1)
+
+### Gives Summary info of experiment, returns experimenter name, save date, animals, experimental group, etc ###
+describe_experiment(experiment = experiment)
+
+### Most likely omitted, function to update experiment data ###
+experiment <- update_experiment(experiment = experiment)
+
+### Saves experiment to selected path ###
+save_experiment(experiment = "" , save_path = "")
+
+### Creates pdf summmary of data with graphs ###
+plotSummaryPDF(data_path = , save_path = "C:/Users/11nho/Desktop/Nathaniel Data/Graphs" , experimenter = 
+
